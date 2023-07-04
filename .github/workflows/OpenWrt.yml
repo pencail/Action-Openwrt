@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [openwrt_21.02.5]
+        target: [iStoreOS]
 
     steps:
     - name: 准备结束
