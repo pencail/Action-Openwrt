@@ -17,7 +17,8 @@ pushd feeds/packages/lang
 rm -rf golang && svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang
 popd
 
-
+cd feeds/packages/lang/
+git reset --hard 9704e900 # go 1.17
 #sed -i 's/192.168.1.1/192.168.1.5/g' package/base-files/files/bin/config_generate
 #sed -i 's/UTC/CST-8/g' package/base-files/files/bin/config_generate
 #sed -i 's/%D %V %C/OpenWrt By Pencail/g' package/base-files/files/etc/openwrt_release
