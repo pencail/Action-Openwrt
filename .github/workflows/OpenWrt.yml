@@ -31,6 +31,8 @@ jobs:
   build:
     runs-on: ubuntu-20.04
 
+
+    #选择系统版本
     name: 编译${{matrix.target}}
     strategy:
       fail-fast: false

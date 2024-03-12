@@ -1,0 +1,5 @@
+将 go 换成1.17
+cd feeds/packages/lang/
+git reset --hard 9704e900 # go 1.17
+
+移除dnsmasq
