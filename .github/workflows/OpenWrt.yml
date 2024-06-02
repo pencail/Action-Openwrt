@@ -22,7 +22,7 @@ on:
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
   GIT_REPOSITORY: ${{github.repository}}
-  UPLOAD_BIN_DIR: true                         #上传 bin 目录。即包含所有 ipk 文件和固件的目录。默认false
+  UPLOAD_BIN_DIR: false                         #上传 bin 目录。即包含所有 ipk 文件和固件的目录。默认false
   UPLOAD_FIRMWARE: true                         #上传固件目录。默认true
   UPLOAD_RELEASE: false                         #上传固件到 releases 。默认false
   TZ: Asia/Shanghai
@@ -91,9 +91,11 @@ jobs:
     - name: 删除自定义源中的argon和argone
       run: |
         cd openwrt
-        rm -rf feeds/kenzo/luci-theme-argon
-        rm -rf feeds/kenzo/luci-them-argone
-        rm -rf feeds/kenzo/luci-app-argone-config
+        rm -rf feeds/kiddin9/luci-theme-argon
+        rm -rf feeds/kiddin9/luci-theme-argon-config
+#        rm -rf feeds/kenzo/luci-theme-argon
+#        rm -rf feeds/kenzo/luci-them-argone
+#        rm -rf feeds/kenzo/luci-app-argone-config
     
     - name: 安装自定义源(feeds)
       run: cd openwrt && ./scripts/feeds install -a
