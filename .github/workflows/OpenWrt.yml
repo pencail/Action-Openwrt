@@ -40,7 +40,7 @@ jobs:
         target: [openwrt_23.05.0]
 
     steps:
-    - name: 准备结束
+    - name: 拉取仓库
       uses: actions/checkout@main
 
     - name: 检测脚本设置
