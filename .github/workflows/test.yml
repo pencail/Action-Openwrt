@@ -47,6 +47,10 @@ jobs:
     - name: 准备结束
       uses: actions/checkout@main
 
+    - uses: de-vri-es/setup-git-credentials@v2
+      with:
+        credentials: https://pencail:${{ secrets.TOKEN_PENCAIL }}@github.com/
+
     - name: 检测脚本设置
       run: |
         source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
