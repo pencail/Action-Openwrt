@@ -96,3 +96,8 @@ jobs:
 
     - name: 更新自定义源(feeds)
       run: cd openwrt && ./scripts/feeds update -a     
+
+    - name: 查看错误
+      run: |
+        cd openwrt
+        cat logs/feeds/pencail/ntfs3-mount/dump.txt
