@@ -39,6 +39,11 @@ jobs:
     - name: 拉取仓库
       uses: actions/checkout@main
 
+    - name: 载入token
+      uses: de-vri-es/setup-git-credentials@v2
+      with:
+        credentials: https://pencail:${{ secrets.TOKEN_PENCAIL }}@github.com/
+
     - name: 检测脚本设置
       run: |
         source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
