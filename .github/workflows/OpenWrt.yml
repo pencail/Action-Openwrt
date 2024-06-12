@@ -16,7 +16,7 @@ on:
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
   GIT_REPOSITORY: ${{github.repository}}
-  UPLOAD_BIN_DIR: false                         #上传 bin 目录。即包含所有 ipk 文件和固件的目录。默认false
+  UPLOAD_BIN_DIR: true                         #上传 bin 目录。即包含所有 ipk 文件和固件的目录。默认false
   UPLOAD_FIRMWARE: true                         #上传固件目录。默认true
   UPLOAD_RELEASE: false                         #上传固件到 releases 。默认false
   UPLOAD_TRANSFER: false                        #奶牛快传和wetransfer快传
@@ -165,7 +165,6 @@ jobs:
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
-#        echo "::set-output name=status::success"
 
     - name: 上传固件在github空间
       uses: actions/upload-artifact@main
