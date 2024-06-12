@@ -60,7 +60,7 @@ jobs:
         echo "hello"
     
     - name: 反向测试
-      if: ${{ ! env.test == 'hello'}}
+      if: env.test != 'hello'
       run: |
         echo "error"
 #    - name: 部署编译环境
