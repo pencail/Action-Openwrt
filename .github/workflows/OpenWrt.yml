@@ -18,7 +18,7 @@ env:
   GIT_REPOSITORY: ${{github.repository}}
   UPLOAD_BIN_DIR: true                         #上传 bin 目录。即包含所有 ipk 文件和固件的目录。默认false
   UPLOAD_FIRMWARE: true                         #上传固件目录。默认true
-  UPLOAD_RELEASE: false                         #上传固件到 releases 。默认false
+  UPLOAD_RELEASE: true                         #上传固件到 releases 。默认false
   UPLOAD_TRANSFER: false                        #奶牛快传和wetransfer快传
 
   TZ: Asia/Shanghai
@@ -240,16 +240,16 @@ jobs:
             ☆  分支 : ${{ env.REPO_BRANCH }}
             ☆  感谢源码作者无私分享！
 
-            🎉 [ ${{matrix.target}} ]固件下载 ✨
+#            🎉 [ ${{matrix.target}} ]固件下载 ✨
             
-            💐 奶牛快传(国内高速🚀下载)： ${{ env.COWTRANSFER_URL }}
+#            💐 奶牛快传(国内高速🚀下载)： ${{ env.COWTRANSFER_URL }}
             
-            ⛄ WeTransfer(国外高速🚀下载)： ${{ env.WETRANSFER_URL }}
+#            ⛄ WeTransfer(国外高速🚀下载)： ${{ env.WETRANSFER_URL }}
             
-            🌴 链接有效期为7天，无需注册直接下载 🐤
+#            🌴 链接有效期为7天，无需注册直接下载 🐤
         files: ${{ env.FIRMWARE }}/*
 
-    - name: telegram通知
+    - name: telegram通知(编译成功)
       uses: appleboy/telegram-action@master
       if: steps.organizer.outputs.status == 'success' && !cancelled()
       with:
@@ -262,7 +262,7 @@ jobs:
 
     - name: telegram通知(编译失败)
       uses: appleboy/telegram-action@master
-      if:  ! steps.organizer.outputs.status == 'success'
+      if: steps.organizer.outputs.status != 'success'
       with:
         to: ${{secrets.TELEGRAM_CHAT_ID}}
         token: ${{secrets.TELEGRAM_TOKEN}}
