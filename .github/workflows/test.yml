@@ -22,7 +22,6 @@ env:
   UPLOAD_FIRMWARE: true           #上传固件目录。默认true
   UPLOAD_RELEASE: false           #上传固件到 releases 。默认false
   TZ: Asia/Shanghai
-
   test: Hello
 
 jobs:
