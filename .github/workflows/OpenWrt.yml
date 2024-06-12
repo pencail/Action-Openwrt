@@ -149,7 +149,7 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
-        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+        echo "FILE_DATE=_$(date +"%Y.%m.%d-%H:%M")" >> $GITHUB_ENV
 
     - name: 检查空间使用情况
       if: (!cancelled())
@@ -224,7 +224,7 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+        echo "release_tag=$(date +"%Y.%m.%d-%H:%M")" >> $GITHUB_OUTPUT
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: 自动发布固件
@@ -248,6 +248,27 @@ jobs:
             
             🌴 链接有效期为7天，无需注册直接下载 🐤
         files: ${{ env.FIRMWARE }}/*
+
+    - name: telegram通知
+      uses: appleboy/telegram-action@master
+      if: steps.organizer.outputs.status == 'success' && !cancelled()
+      with:
+        to: ${{secrets.TELEGRAM_CHAT_ID}}
+        token: ${{secrets.TELEGRAM_TOKEN}}
+        message: |
+           「 ${{ env.REPO_BRANCH }} 」固件编译成功
+           请前往查看 https://github.com/${{ github.repository }}/releases
+           时间：${{ steps.tag.outputs.release_tag }}
+
+    - name: telegram通知(编译失败)
+      uses: appleboy/telegram-action@master
+      if:  ! steps.organizer.outputs.status == 'success'
+        to: ${{secrets.TELEGRAM_CHAT_ID}}
+        token: ${{secrets.TELEGRAM_TOKEN}}
+        message: |
+           「 ${{ env.REPO_BRANCH }} 」固件编译失败
+           请前往查看 https://github.com/${{ github.repository }}/action
+           编译时间：${{ env.FILE_DATE }}
 
 #    - name: 删除工作流
 #      uses: GitRML/delete-workflow-runs@main
