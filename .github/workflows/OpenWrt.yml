@@ -263,6 +263,7 @@ jobs:
     - name: telegram通知(编译失败)
       uses: appleboy/telegram-action@master
       if:  ! steps.organizer.outputs.status == 'success'
+      with:
         to: ${{secrets.TELEGRAM_CHAT_ID}}
         token: ${{secrets.TELEGRAM_TOKEN}}
         message: |
