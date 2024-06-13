@@ -12,6 +12,7 @@ name: OpenWrt编译
 
 on:
   workflow_dispatch:
+#  repository_dispatch:
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
@@ -123,13 +124,6 @@ jobs:
         if [ -n "$(ls -A "build/${{matrix.target}}/DIY" 2>/dev/null)" ]; then
           cp -Rf $GITHUB_WORKSPACE/build/${{matrix.target}}/DIY/* openwrt
         fi
-
-#    - name: SSH远程连接服务器配置固件 
-#      uses: P3TERX/ssh2actions@v1.0.0
-#      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-#      env:
-#        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-#        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
     - name: 下载软件包
       id: package
