@@ -21,16 +21,18 @@
 
 
 
+<div align="center">
 
-# <center> Action-Openwrt(openwrt自动编译系统) 
+# Action-Openwrt(openwrt自动编译系统) 
 
----
 [![license][license-badge]][license]
 [![prs][prs-badge]][prs]
 [![issues][issues-badge]][issues]
 [![release][release-badge]][release]
 [![download][download-badge]][download]
 [![contact][contact-badge]][contact]
+
+</div>
 
 ## 文件结构示意
 ```
@@ -73,7 +75,7 @@
 注意：nginx默认强制使用https(ssl)，需要自行修改
 以下为取消https强制跳转
 在 /etc/nginx/conf.d 中创建一个 web.conf 文件（web为文件名称，随意）
-```
+```yaml
 server {
     listen 80 default_server;
     isten [::]:80 default_server;
@@ -97,7 +99,7 @@ server {
 ```
 以下为内网http，外部使用域名并强制跳转https  
 除了上述web.conf外，在创建一个https.conf
-```
+```yaml
 server {
     listen 80;
     listen [::]:80;
