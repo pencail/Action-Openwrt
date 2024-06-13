@@ -24,8 +24,8 @@
 #echo 'src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main' >>feeds.conf.default
 #echo 'src-git istore https://github.com/linkease/istore;main' >>feeds.conf.default
 
-echo 'src-git kiddin9 https://github.com/kiddin9/openwrt-packages' >>feeds.conf.default
-#echo 'src-git pencail https://github.com/pencail/openwrt-packages' >>feeds.conf.default
+#echo 'src-git kiddin9 https://github.com/kiddin9/openwrt-packages' >>feeds.conf.default
+echo 'src-git pencail https://github.com/pencail/openwrt-packages' >>feeds.conf.default
 
 
 git clone --branch luci-21 https://github.com/jjm2473/luci-theme-argon.git package/luci-theme-argon
