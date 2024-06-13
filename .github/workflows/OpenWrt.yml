@@ -248,7 +248,7 @@ jobs:
 
     - name: telegram通知(编译成功)
       uses: appleboy/telegram-action@master
-      if: steps.organizer.outputs.status == 'success' && !cancelled()
+      if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
         to: ${{secrets.TELEGRAM_CHAT_ID}}
         token: ${{secrets.TELEGRAM_TOKEN}}
@@ -259,7 +259,7 @@ jobs:
 
     - name: telegram通知(编译失败)
       uses: appleboy/telegram-action@master
-      if: steps.organizer.outputs.status != 'success'
+      if: steps.organize.outputs.status != 'success'
       with:
         to: ${{secrets.TELEGRAM_CHAT_ID}}
         token: ${{secrets.TELEGRAM_TOKEN}}
