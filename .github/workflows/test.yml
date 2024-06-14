@@ -23,6 +23,9 @@ env:
   UPLOAD_RELEASE: false           #上传固件到 releases 。默认false
   TZ: Asia/Shanghai
   test: error
+  REPO_BRANCH: www
+  FILE_DATE: time
+  
 
 jobs:
   build:
@@ -66,12 +69,15 @@ jobs:
 
     - name: telegram通知(编译成功)
       uses: appleboy/telegram-action@master
-#      if: steps.organize.outputs.status == 'success' && !cancelled()
+      if: en.test == 'error'
       with:
         to: ${{secrets.TELEGRAM_CHAT_ID}}
         token: ${{secrets.TELEGRAM_TOKEN}}
         message: |
            测试成功
+           「 ${{ env.REPO_BRANCH }} 」固件编译失败
+           
+           编译时间：${{ env.FILE_DATE }}
 
 #    - name: 部署编译环境
 #      env:
