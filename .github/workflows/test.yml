@@ -63,6 +63,16 @@ jobs:
       if: env.test != 'hello'
       run: |
         echo "error"
+
+    - name: telegram通知(编译成功)
+      uses: appleboy/telegram-action@master
+#      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        to: ${{secrets.TELEGRAM_CHAT_ID}}
+        token: ${{secrets.TELEGRAM_TOKEN}}
+        message: |
+           测试成功
+
 #    - name: 部署编译环境
 #      env:
 #        DEBIAN_FRONTEND: noninteractive
