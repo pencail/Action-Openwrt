@@ -69,7 +69,7 @@ jobs:
 
     - name: telegram通知(编译成功)
       uses: appleboy/telegram-action@master
-      if: en.test == 'error'
+      if: env.test == 'error'
       with:
         to: ${{secrets.TELEGRAM_CHAT_ID}}
         token: ${{secrets.TELEGRAM_TOKEN}}
