@@ -225,7 +225,7 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: 自动发布固件
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -246,16 +246,16 @@ jobs:
 #            🌴 链接有效期为7天，无需注册直接下载 🐤
         files: ${{ env.FIRMWARE }}/*
 
-#    - name: telegram通知(编译成功)
-#      uses: appleboy/telegram-action@master
-#      if: steps.organize.outputs.status == 'success' && !cancelled()
-#      with:
-#        to: ${{secrets.TELEGRAM_CHAT_ID}}
-#        token: ${{secrets.TELEGRAM_TOKEN}}
-#        message: |
-#           「 ${{ env.REPO_BRANCH }} 」固件编译成功
-#           请前往查看 https://github.com/${{ github.repository }}/releases
-#           时间：${{ steps.tag.outputs.release_tag }}
+    - name: telegram通知(编译成功)
+      uses: appleboy/telegram-action@master
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        to: ${{secrets.TELEGRAM_CHAT_ID}}
+        token: ${{secrets.TELEGRAM_TOKEN}}
+        message: |
+           「 ${{ env.REPO_BRANCH }} 」固件编译成功
+           请前往查看 https://github.com/${{ github.repository }}/releases
+           时间：${{ steps.tag.outputs.release_tag }}
 
 #    - name: telegram通知(编译失败)
 #      uses: appleboy/telegram-action@master
