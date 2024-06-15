@@ -1,0 +1,146 @@
+name: 测试2
+
+on:
+  workflow_dispatch:
+
+env:
+  GITHUB_LINK: https://github.com/${{github.repository}}
+  GIT_REPOSITORY: ${{github.repository}}
+  UPLOAD_BIN_DIR: true                         #上传 bin 目录。即包含所有 ipk 文件和固件的目录。默认false
+  UPLOAD_FIRMWARE: true                         #上传固件目录。默认true
+  UPLOAD_RELEASE: true                         #上传固件到 releases 。默认false
+  UPLOAD_TRANSFER: false                        #奶牛快传和wetransfer快传
+
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    
+    #赋予写入权限
+    permissions:
+      contents: write
+
+    #选择系统版本
+    name: 编译${{matrix.target}}
+    strategy:
+      fail-fast: false                      # true：只要流程中有失败，自动停止所有流程
+      matrix:
+        target: [openwrt_23.05.0]
+        
+    steps:
+    - name: 拉取仓库
+      uses: actions/checkout@main
+
+    - name: 配置git环境，使用自己的token(私有仓库时使用)
+      uses: de-vri-es/setup-git-credentials@v2
+      with:
+        credentials: https://pencail:${{ secrets.TOKEN_PENCAIL }}@github.com/
+
+    - name: 检测脚本设置
+      run: |
+        source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
+
+        echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
+        echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
+        echo "CONFIG_FILE=${CONFIG_FILE}" >> ${GITHUB_ENV}
+        echo "FEEDS_CONF=${FEEDS_CONF}" >> ${GITHUB_ENV}
+        echo "DIY_P1_SH=${DIY_P1_SH}" >> ${GITHUB_ENV}
+        echo "DIY_P2_SH=${DIY_P2_SH}" >> ${GITHUB_ENV}
+
+    - name: 部署编译环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+        sudo docker image prune --all --force
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev        
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+
+    - name: 下载固件
+      working-directory: /workdir
+      run: |
+        df -hT $PWD
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt        
+
+    - name: 加载自定义源(feeds)，同时运行part1脚本
+      run: |
+        if [ -f "build/${{matrix.target}}/$FEEDS_CONF" ]; then
+          cp build/${{matrix.target}}/$FEEDS_CONF openwrt/feeds.conf.default
+        fi
+        
+        chmod +x build/${{matrix.target}}/$DIY_P1_SH
+        cd openwrt
+        /bin/bash "$GITHUB_WORKSPACE/build/${{matrix.target}}/$DIY_P1_SH"
+
+    - name: 更新自定义源(feeds)
+      run: cd openwrt && ./scripts/feeds update -a
+    
+    - name: 删除自定义源中的argon
+      run: |
+        cd openwrt
+        rm -rf feeds/pencail/luci-theme-argon
+        rm -rf feeds/pencail/luci-theme-argon-config
+
+    - name: 安装自定义源(feeds)
+      run: cd openwrt && ./scripts/feeds install -a
+      
+
+    - name: 加载配置文件(config)，同时运行part2脚本
+      run: |
+        cp build/${{matrix.target}}/$CONFIG_FILE openwrt/.config
+        chmod +x build/${{matrix.target}}/$DIY_P2_SH    
+        cd openwrt
+        /bin/bash "$GITHUB_WORKSPACE/build/${{matrix.target}}/$DIY_P2_SH"
+
+    - name: 加载file文件
+      run: |
+        if [ -n "$(ls -A "build/${{matrix.target}}/DIY" 2>/dev/null)" ]; then
+          cp -Rf $GITHUB_WORKSPACE/build/${{matrix.target}}/DIY/* openwrt
+        fi
+
+    - name: 下载软件包
+      id: package
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j8
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+
+    - name: 开始编译
+      id: compile
+      run: |
+        cd openwrt
+        echo "status=success" >> $GITHUB_OUTPUT
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "FILE_DATE=$(date +"%Y.%m.%d-%H.%M")" >> $GITHUB_ENV      
+
+    - name: telegram通知(编译成功)
+      uses: appleboy/telegram-action@master
+      if: steps.organize.outputs.status == 'success'
+      with:
+        to: ${{secrets.TELEGRAM_CHAT_ID}}
+        token: ${{secrets.TELEGRAM_TOKEN}}
+        message: |
+           「 ${{ env.REPO_BRANCH }} 」固件编译成功
+           请前往查看 https://github.com/${{ github.repository }}/releases
+           时间：${{ steps.tag.outputs.release_tag }}
+
+    - name: telegram通知(编译失败)
+      uses: appleboy/telegram-action@master
+      if: steps.organize.outputs.status != 'success'
+      with:
+        to: ${{secrets.TELEGRAM_CHAT_ID}}
+        token: ${{secrets.TELEGRAM_TOKEN}}
+        message: |
+           「 ${{ env.REPO_BRANCH }} 」固件编译失败
+           请前往查看 https://github.com/${{ github.repository }}/action
+           编译时间：${{ env.FILE_DATE }}
