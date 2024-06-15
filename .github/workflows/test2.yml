@@ -80,11 +80,11 @@ jobs:
       id: compile
       run: |
         echo "status=success" >> $GITHUB_OUTPUT  
-        echo ${{steps.organize.outputs.status}}
+        echo ${{steps.compile.outputs.status}}
 
     - name: telegram通知(编译成功)
       uses: appleboy/telegram-action@master
-      if: steps.organize.outputs.status == 'success'
+      if: steps.compile.outputs.status == 'success'
       with:
         to: ${{secrets.TELEGRAM_CHAT_ID}}
         token: ${{secrets.TELEGRAM_TOKEN}}
