@@ -31,6 +31,9 @@ jobs:
   build:
     runs-on: ubuntu-20.04
 
+    permissions:
+      contents: write
+
     name: 编译${{matrix.target}}
     strategy:
       fail-fast: false
