@@ -29,8 +29,8 @@ jobs:
     runs-on: ubuntu-20.04
 
     #赋予写入权限
-    permissions:
-      contents: write
+ #   permissions:
+ #     contents: write
       
     #选择系统版本
     name: 编译${{matrix.target}}
