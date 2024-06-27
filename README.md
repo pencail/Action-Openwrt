@@ -10,7 +10,6 @@
 [download-badge]: https://img.shields.io/github/downloads/jerrykuku/luci-theme-argon/total?style=flat-square
 [contact]: https://t.me/jerryk6
 [contact-badge]: https://img.shields.io/badge/Contact-telegram-blue?style=flat-square
-[en-us-link]: /README.md
 [zh-cn-link]: /README_ZH.md
 [en-us-release-log]: /RELEASE.md
 [zh-cn-release-log]: /RELEASE_ZH.md
@@ -64,6 +63,13 @@
 ```
 
 ## 使用方法
+修改完DIY、脚本等文件，去github action运行 Openwrt.yml 即可
+BuildOpenwrt.yml 说明
+```
+ matrix:
+    target: [openwrt_23.05.0]      ##此处为要编译的版本，和存放配置的文件夹对应
+```
+其余在Openwrt.yml中有对应注释
 
 ## 注意事项
 1. nginx默认https同时ttyd终端无法显示
