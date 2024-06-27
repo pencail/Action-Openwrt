@@ -1,20 +1,18 @@
 [license]: /LICENSE
 [license-badge]: https://img.shields.io/github/license/jerrykuku/luci-theme-argon?style=flat-square&a=1
-[prs]: https://github.com/jerrykuku/luci-theme-argon/pulls
+[prs]: https://github.com/pencail/Action-Openwrt/pulls
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
-[issues]: https://github.com/jerrykuku/luci-theme-argon/issues/new
+[issues]: https://github.com/pencail/Action-Openwrt/issues/new
 [issues-badge]: https://img.shields.io/badge/Issues-welcome-brightgreen.svg?style=flat-square
-[release]: https://github.com/jerrykuku/luci-theme-argon/releases
+[release]: https://github.com/pencail/Action-Openwrt/releases
 [release-badge]: https://img.shields.io/github/v/release/jerrykuku/luci-theme-argon?style=flat-square
-[download]: https://github.com/jerrykuku/luci-theme-argon/releases
+[download]: https://github.com/pencail/Action-Openwrt/releases
 [download-badge]: https://img.shields.io/github/downloads/jerrykuku/luci-theme-argon/total?style=flat-square
-[contact]: https://t.me/jerryk6
-[contact-badge]: https://img.shields.io/badge/Contact-telegram-blue?style=flat-square
+#[contact]: https://t.me/jerryk6
+#[contact-badge]: https://img.shields.io/badge/Contact-telegram-blue?style=flat-square
 [23.05-link]: /MarkDown/23.05.md
 [en-us-release-log]: /RELEASE.md
 [zh-cn-release-log]: /RELEASE_ZH.md
-[config-link]: https://github.com/jerrykuku/luci-app-argon-config/releases
-[lede]: https://github.com/coolsnowwolf/lede
 [official]: https://github.com/openwrt/openwrt
 [immortalwrt]: https://github.com/immortalwrt/immortalwrt
 
