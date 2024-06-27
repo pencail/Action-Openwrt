@@ -5,9 +5,9 @@
 [issues]: https://github.com/pencail/Action-Openwrt/issues/new
 [issues-badge]: https://img.shields.io/badge/Issues-welcome-brightgreen.svg?style=flat-square
 [release]: https://github.com/pencail/Action-Openwrt/releases
-[release-badge]: https://img.shields.io/github/v/release/jerrykuku/luci-theme-argon?style=flat-square
+[release-badge]: https://img.shields.io/github/v/release/pencail/Action-Openwrt?style=flat-square
 [download]: https://github.com/pencail/Action-Openwrt/releases
-[download-badge]: https://img.shields.io/github/downloads/jerrykuku/luci-theme-argon/total?style=flat-square
+[download-badge]: https://img.shields.io/github/downloads/pencail/Action-Openwrt/total?style=flat-square
 <!-- [contact]: https://t.me/jerryk6 -->
 <!-- [contact-badge]: https://img.shields.io/badge/Contact-telegram-blue?style=flat-square -->
 [23.05-link]: /MarkDown/23.05.md
