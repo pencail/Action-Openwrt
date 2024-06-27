@@ -10,7 +10,7 @@
 [download-badge]: https://img.shields.io/github/downloads/jerrykuku/luci-theme-argon/total?style=flat-square
 [contact]: https://t.me/jerryk6
 [contact-badge]: https://img.shields.io/badge/Contact-telegram-blue?style=flat-square
-[zh-cn-link]: /README_ZH.md
+[23.05-link]: /MarkDown/23.05.md
 [en-us-release-log]: /RELEASE.md
 [zh-cn-release-log]: /RELEASE_ZH.md
 [config-link]: https://github.com/jerrykuku/luci-app-argon-config/releases
@@ -75,7 +75,7 @@ BuildOpenwrt.yml 说明
 1. nginx默认https同时ttyd终端无法显示
 
 ## 配置文件说明
-
+[23.05][23.05-link]
 
 ## 任务
 - [x] 美化readme
