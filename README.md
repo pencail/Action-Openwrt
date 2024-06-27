@@ -8,8 +8,8 @@
 [release-badge]: https://img.shields.io/github/v/release/jerrykuku/luci-theme-argon?style=flat-square
 [download]: https://github.com/pencail/Action-Openwrt/releases
 [download-badge]: https://img.shields.io/github/downloads/jerrykuku/luci-theme-argon/total?style=flat-square
-#[contact]: https://t.me/jerryk6
-#[contact-badge]: https://img.shields.io/badge/Contact-telegram-blue?style=flat-square
+<!-- [contact]: https://t.me/jerryk6 -->
+<!-- [contact-badge]: https://img.shields.io/badge/Contact-telegram-blue?style=flat-square -->
 [23.05-link]: /MarkDown/23.05.md
 [en-us-release-log]: /RELEASE.md
 [zh-cn-release-log]: /RELEASE_ZH.md
