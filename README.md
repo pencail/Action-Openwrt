@@ -27,7 +27,7 @@
 [![issues][issues-badge]][issues]
 [![release][release-badge]][release]
 [![download][download-badge]][download]
-[![contact][contact-badge]][contact]
+// [![contact][contact-badge]][contact]
 
 </div>
 
