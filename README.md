@@ -1,5 +1,5 @@
 [license]: /LICENSE
-[license-badge]: https://img.shields.io/github/license/pencail/Action-Openwrt?style=flat-square
+[license-badge]: https://img.shields.io/github/license/pencail/Action-Openwrt?style=flat-square&a=1
 [prs]: https://github.com/pencail/Action-Openwrt/pulls
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [issues]: https://github.com/pencail/Action-Openwrt/issues/new
