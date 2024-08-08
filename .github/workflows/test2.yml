@@ -6,7 +6,7 @@ on:
       target:
         description: '选择版本'   #默认 false ，true 为开启
         required: true
-        default: 'openwrt_23.05.0'
+        default: "openwrt_23.05.0"
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
