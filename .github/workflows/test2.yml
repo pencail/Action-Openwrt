@@ -4,9 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       target:
+        type: choice
         description: '选择版本'
         required: true
-        default: openwrt_23.05.0
+        default: 'openwrt_23.05.0'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
