@@ -12,6 +12,11 @@ name: OpenWrt编译
 
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: '选择版本'   #默认 false ，true 为开启
+        required: true
+        default: 'openwrt_23.05.0'
 #  repository_dispatch:
 
 env:
