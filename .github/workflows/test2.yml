@@ -3,10 +3,10 @@ name: 测试2
 on:
   workflow_dispatch:
     inputs:
-      target:
-        description: '选择版本'
+      ssh:
+        description: '是否开启SSH'   #默认 false ，true 为开启
         required: false
-        default: 'ssh'
+        default: 'false'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
