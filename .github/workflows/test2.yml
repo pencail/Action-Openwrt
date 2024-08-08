@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        type: choice
+        type: environment
         description: '选择版本'
         required: true
         default: 'openwrt_23.05.0'
