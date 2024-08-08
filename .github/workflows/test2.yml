@@ -6,7 +6,7 @@ on:
       target:
         description: '选择版本'
         required: true
-        default: 'openwrt'
+        default: 'ssh'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
