@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: OpenWrt编译
+name: OpenWrt编译(可同时编译多个)
 
 on:
   workflow_dispatch:

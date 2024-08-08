@@ -75,6 +75,9 @@ BuildOpenwrt.yml 说明
 ## 配置文件说明
 [23.05][23.05-link]
 
+## token配置
+如果要使用telegram通知，请首先配置telegram的token，并加入设置中的环境变量 settings > Secrets and analysis > action > Repository secrets,
+
 ## 任务
 - [x] 美化readme
 - [ ] 
