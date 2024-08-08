@@ -3,10 +3,10 @@ name: 测试2
 on:
   workflow_dispatch:
     inputs:
-      ssh:
-        description: '是否开启SSH'   #默认 false ，true 为开启
-        required: false
-        default: 'false'
+      target:
+        description: '选择版本'   #默认 false ，true 为开启
+        required: true
+        default: 'openwrt_23.05.0'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
@@ -31,7 +31,7 @@ jobs:
     strategy:
       fail-fast: false                      # true：只要流程中有失败，自动停止所有流程
       matrix:
-        target: ${{github.event.inputs.target}}
+        target: [${{github.event.inputs.target}}]
         
     steps:
     - name: 拉取仓库
