@@ -85,13 +85,13 @@ jobs:
 
     - name: 加载自定义源(feeds)，同时运行part1脚本
       run: |
-        if [ -f "build/${{matrix.target}}/$FEEDS_CONF" ]; then
-          cp build/${{matrix.target}}/$FEEDS_CONF openwrt/feeds.conf.default
+        if [ -f "build/${{github.event.inputs.target}}/$FEEDS_CONF" ]; then
+          cp build/${{github.event.inputs.target}}/$FEEDS_CONF openwrt/feeds.conf.default
         fi
         
-        chmod +x build/${{matrix.target}}/$DIY_P1_SH
+        chmod +x build/${{github.event.inputs.target}}/$DIY_P1_SH
         cd openwrt
-        /bin/bash "$GITHUB_WORKSPACE/build/${{matrix.target}}/$DIY_P1_SH"
+        /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/$DIY_P1_SH"
 #        [ -e $FEEDS_CONF ] && 
 
     - name: 更新自定义源(feeds)
@@ -112,16 +112,16 @@ jobs:
 
     - name: 加载配置文件(config)，同时运行part2脚本
       run: |
-        cp build/${{matrix.target}}/$CONFIG_FILE openwrt/.config
-        chmod +x build/${{matrix.target}}/$DIY_P2_SH    
+        cp build/${{github.event.inputs.target}}/$CONFIG_FILE openwrt/.config
+        chmod +x build/${{github.event.inputs.target}}/$DIY_P2_SH    
         cd openwrt
-        /bin/bash "$GITHUB_WORKSPACE/build/${{matrix.target}}/$DIY_P2_SH"
+        /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/$DIY_P2_SH"
 #        [ -e $CONFIG_FILE ] && 
         
     - name: 加载file文件
       run: |
-        if [ -n "$(ls -A "build/${{matrix.target}}/DIY" 2>/dev/null)" ]; then
-          cp -Rf $GITHUB_WORKSPACE/build/${{matrix.target}}/DIY/* openwrt
+        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/DIY" 2>/dev/null)" ]; then
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/DIY/* openwrt
         fi
 
     - name: 下载软件包
