@@ -37,6 +37,7 @@ jobs:
     - name: 输出
       run: |
         echo ${{github.event.inputs.target}}
+        echo ${{matrix.target}}
     
     - name: 拉取仓库
       uses: actions/checkout@main
