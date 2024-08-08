@@ -48,3 +48,7 @@ jobs:
         echo "DIY_P1_SH=${DIY_P1_SH}" >> ${GITHUB_ENV}
         echo "DIY_P2_SH=${DIY_P2_SH}" >> ${GITHUB_ENV}
 
+    - name: 输出
+      run: |
+        echo ${{github.event.inputs.ssh}}
+
