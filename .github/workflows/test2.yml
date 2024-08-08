@@ -31,7 +31,7 @@ jobs:
     strategy:
       fail-fast: false                      # true：只要流程中有失败，自动停止所有流程
       matrix:
-        target: [${{github.event.inputs.target}}]
+        target: [github.event.inputs.target]
         
     steps:
     - name: 拉取仓库
@@ -50,5 +50,5 @@ jobs:
 
     - name: 输出
       run: |
-        echo ${{github.event.inputs.ssh}}
+        echo ${{github.event.inputs.target}}
 
