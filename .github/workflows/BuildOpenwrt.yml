@@ -17,7 +17,7 @@ on:
       target:
         description: '选择版本'
         required: true
-        default: 'openwrt_23.05.0'
+        default: 'openwrt_24.10.0'
 #  repository_dispatch:
 
 env:
@@ -82,6 +82,12 @@ jobs:
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+
+    - name: 加载内核MD5文件
+      run: |
+        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/md5.vermagic" 2>/dev/null)" ]; then
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/md5.vermagic openwrt/.vermagic
+        fi
 
     - name: 加载自定义源(feeds)，同时运行part1脚本
       run: |
