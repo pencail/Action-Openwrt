@@ -71,12 +71,13 @@ BuildOpenwrt.yml 说明
 
 ## 注意事项
 1. nginx默认https同时ttyd终端无法显示
+2. adguardhome和luci-app-adguardhome冲突问题，有些大佬提供的luci-app-adguardhome中会有初始化脚本，请删除其中一个
 
 ## 配置文件说明
 [23.05][23.05-link]
 
 ## token配置
-如果要使用telegram通知，请首先配置telegram的token，并加入设置中的环境变量 settings > Secrets and analysis > action > Repository secrets,
+如果要使用telegram通知，请首先配置telegram的token，并加入设置中的环境变量 settings > Secrets and analysis > action > Repository secrets
 
 ## 任务
 - [x] 美化readme
