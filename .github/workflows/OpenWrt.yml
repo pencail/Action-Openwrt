@@ -26,7 +26,7 @@ env:
 
 jobs:
   build:
-    runs-on: Ubuntu 24.04
+    runs-on: Ubuntu-24.04
 
     #赋予写入权限
  #   permissions:
