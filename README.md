@@ -72,7 +72,8 @@ BuildOpenwrt.yml 说明
 ## 注意事项
 1. nginx默认https同时ttyd终端无法显示
 2. adguardhome和luci-app-adguardhome冲突问题，有些大佬提供的luci-app-adguardhome中会有初始化脚本，请删除其中一个
-3. 如果编译中libxcrypt-4.4.36报错，在package/feeds/packages/libxcrypt/Makefile中插入如下内容'''PKG_FORTIFY_SOURCE=0'''
+3. 如果编译中libxcrypt-4.4.36报错，在package/feeds/packages/libxcrypt/Makefile中插入如下内容 ```PKG_FORTIFY_SOURCE=0```
+4. <font color=red>请时刻注意rust版本，自动化编译过程中可能出现版本落后，无法拉取上游的CI，注意修改diy-part2.sh中的rust版本</font>
 
 ## 配置文件说明
 [23.05][23.05-link]

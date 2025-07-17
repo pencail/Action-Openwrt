@@ -35,3 +35,6 @@ sed -i '130s#.*#\tcp $(TOPDIR)/.vermagic $(LINUX_DIR)/.vermagic#g' include/kerne
 #删除软件仓库中luci-app-adguardhome或者adguardhome的初始化脚本
 #rm -f feeds/pencail/luci-app-adguardhome/root/etc/init.d/adguardhome
 sed -i '/INSTALL_BIN/d' feeds/packages/net/adguardhome/Makefile
+
+#修改rust版本
+sed -i '8s/.*/PKG_VERSION:=1.87.0/g' feeds/packages/lang/rust/Makefile
