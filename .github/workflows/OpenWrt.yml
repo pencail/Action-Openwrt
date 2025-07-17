@@ -38,7 +38,7 @@ jobs:
       fail-fast: false                      # true：只要流程中有失败，自动停止所有流程
       matrix:
   #      target: [openwrt_23.05.0, openwrt_24.10.0]
-        target: [openwrt_23.05.5]
+        target: [openwrt_23.05.0]
 
     steps:
     - name: 拉取仓库
