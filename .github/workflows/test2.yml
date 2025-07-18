@@ -100,6 +100,7 @@ jobs:
         cd openwrt
         echo "........"
         sed -i "s|grep '=[ym]' \$(LINUX_DIR)/.config.set.*|cp \$(TOPDIR)/.vermagic \$(LINUX_DIR)/.vermagic|" include/kernel-defaults.mk
+        sed -i "s|grep '[=][ym]' \$(LINUX_DIR)/\.config\.set \| LC_ALL=C sort \| \$(MKHASH) md5 > \$(LINUX_DIR)/\.vermagic|cp \$(TOPDIR)/\.vermagic \$(LINUX_DIR)/\.vermagic|" include/kernel-defaults.mk
         chmod a-w include/kernel-defaults.mk
         ls -a
         echo "........"
