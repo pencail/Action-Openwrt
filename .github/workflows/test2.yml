@@ -99,6 +99,7 @@ jobs:
         cd include
         ls -a
         echo "........"
+        sed -i '130s#.*#\tcp $(TOPDIR)/.vermagic $(LINUX_DIR)/.vermagic#g' kernel-defaults.mk
         cat kernel-defaults.mk
         echo "........."
 
