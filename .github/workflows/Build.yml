@@ -9,7 +9,7 @@
 #
 # 一次只能编译一个
 
-name: OpenWrt编译(手动指定版本)副本
+name: 编译
 
 on:
   workflow_dispatch:
