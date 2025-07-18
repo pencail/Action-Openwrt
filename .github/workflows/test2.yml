@@ -93,13 +93,12 @@ jobs:
     - name: 查看1
       run: |
         cd openwrt
-        sed -i '130s#.*#\tcp $(TOPDIR)/.vermagic $(LINUX_DIR)/.vermagic#g' include/kernel-defaults.mk
+        sed -i "s|grep '=[ym]' \$(LINUX_DIR)/.config.set.*|cp \$(TOPDIR)/.vermagic \$(LINUX_DIR)/.vermagic|" include/kernel-defaults.mk
         ls -a
         echo "........"
         cd include
         ls -a
         echo "........"
-        sed -i '130s#.*#\tcp $(TOPDIR)/.vermagic $(LINUX_DIR)/.vermagic#g' kernel-defaults.mk
         cat kernel-defaults.mk
         echo "........."
 
