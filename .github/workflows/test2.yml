@@ -42,14 +42,30 @@ jobs:
     - name: 拉取仓库
       uses: actions/checkout@main
 
-    - name: 检测脚本设置
-      run: |
-        source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
+    # - name: 检测脚本设置
+    #   run: |
+    #     source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
 
-        echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
-        echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
-        echo "CONFIG_FILE=${CONFIG_FILE}" >> ${GITHUB_ENV}
-        echo "FEEDS_CONF=${FEEDS_CONF}" >> ${GITHUB_ENV}
-        echo "DIY_P1_SH=${DIY_P1_SH}" >> ${GITHUB_ENV}
-        echo "DIY_P2_SH=${DIY_P2_SH}" >> ${GITHUB_ENV}
+    #     echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
+    #     echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
+    #     echo "CONFIG_FILE=${CONFIG_FILE}" >> ${GITHUB_ENV}
+    #     echo "FEEDS_CONF=${FEEDS_CONF}" >> ${GITHUB_ENV}
+    #     echo "DIY_P1_SH=${DIY_P1_SH}" >> ${GITHUB_ENV}
+    #     echo "DIY_P2_SH=${DIY_P2_SH}" >> ${GITHUB_ENV}
+
+    - name: 下载固件
+      working-directory: /workdir
+      run: |
+        df -hT $PWD
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+
+    - name: 加载内核MD5文件
+      run: |
+        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/md5.vermagic" 2>/dev/null)" ]; then
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/md5.vermagic openwrt/.vermagic
+        fi
+
+        cd openwrt
+        ls -a
 
