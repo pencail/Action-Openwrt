@@ -90,11 +90,14 @@ jobs:
         cd openwrt
         /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/$DIY_P2_SH"
 
+    - name: 测试1
+      run: |
+        sed -n '/grep .*=[ym].*\.config\.set.*\.vermagic/p' include/kernel-defaults.mk
+      
     - name: 查看1
       run: |
         cd openwrt
         echo "........"
-        sed -n '/grep .*=[ym].*\.config\.set.*\.vermagic/p' include/kernel-defaults.mk
         sed -i "s|grep '=[ym]' \$(LINUX_DIR)/.config.set.*|cp \$(TOPDIR)/.vermagic \$(LINUX_DIR)/.vermagic|" include/kernel-defaults.mk
         chmod a-w include/kernel-defaults.mk
         ls -a
