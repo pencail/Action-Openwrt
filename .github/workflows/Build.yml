@@ -10,13 +10,12 @@
 # 一次只能编译一个
 
 name: 编译
-
 on:
   workflow_dispatch:
     inputs:
       target:
         description: '选择版本'
-        required: true
+        required: false
         default: 'openwrt_24.10.0'
 #  repository_dispatch:
 
