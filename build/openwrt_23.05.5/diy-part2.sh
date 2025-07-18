@@ -34,4 +34,4 @@ sed -i '29s#.*#\tSTAMP_BUILT:=$(STAMP_BUILT)_$(shell cat $(LINUX_DIR)/.vermagic)
 
 #删除软件仓库中luci-app-adguardhome或者adguardhome的初始化脚本
 #rm -f feeds/pencail/luci-app-adguardhome/root/etc/init.d/adguardhome
-sed -i '/INSTALL_BIN/d' feeds/packages/net/adguardhome/Makefile
+#sed -i '/INSTALL_BIN/d' feeds/packages/net/adguardhome/Makefile
