@@ -31,7 +31,7 @@
 #复制官方内核md5到编译中
 #sed -i '129a cp $(TOPDIR)/.vermagic $(LINUX_DIR)/.vermagic' include/kernel-defaults.mk
 #sed -i '130s/.*/cp \$(TOPDIR)\/\.vermagic \$(LINUX_DIR)\/\.vermagic/g' include/kernel-defaults.mk
-sed -i "s#${PATCH}#${VERMAGIC_PATCH}#g" include/kernel-defaults.mk
+#sed -i "s#${PATCH}#${VERMAGIC_PATCH}#g" include/kernel-defaults.mk
 
 #删除软件仓库中luci-app-adguardhome或者adguardhome的初始化脚本
 #rm -f feeds/pencail/luci-app-adguardhome/root/etc/init.d/adguardhome
