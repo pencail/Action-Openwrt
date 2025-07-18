@@ -92,6 +92,7 @@ jobs:
 
     - name: 测试1
       run: |
+        cd openwrt
         sed -n '/grep .*=[ym].*\.config\.set.*\.vermagic/p' include/kernel-defaults.mk
       
     - name: 查看1
