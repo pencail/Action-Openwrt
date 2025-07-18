@@ -80,6 +80,7 @@ jobs:
 
         cd openwrt
         ls -a
+        echo "..........."
         cat .vermagic
         
     - name: 加载配置文件(config)，同时运行part2脚本
@@ -92,9 +93,13 @@ jobs:
     - name: 查看1
       run: |
         cd openwrt
-        echo "```"
-        cat include/kernel-defaults.mk
-        echo "```"
+        ls -a
+        echo "........"
+        cd include
+        ls -a
+        echo "........"
+        cat kernel-defaults.mk
+        echo "........."
 
     - name: 查看2
       run: |
