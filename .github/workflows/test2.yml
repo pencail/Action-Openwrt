@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: '选择版本'   #默认 false ，true 为开启
+        description: '选择版本'
         required: true
-        default: 'openwrt_23.05.0'
+        default: 'openwrt_24.10.0'
 
 env:
   GITHUB_LINK: https://github.com/${{github.repository}}
@@ -29,11 +29,13 @@ jobs:
     #选择系统版本
     name: 编译${{github.event.inputs.target}}
     strategy:
-      fail-fast: false                      # true：只要流程中有失败，自动停止所有流程
-      matrix:
-        target: [github.event.inputs.target]
+      fail-fast: true                      # true：只要流程中有失败，自动停止所有流程
+
         
     steps:
+    - name: 拉取仓库
+      uses: actions/checkout@main
+    
     - name: 输出
       run: |
         echo ${{github.event.inputs.target}}
