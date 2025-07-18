@@ -94,6 +94,7 @@ jobs:
       run: |
         cd openwrt
         sed -i "s|grep '=[ym]' \$(LINUX_DIR)/.config.set.*|cp \$(TOPDIR)/.vermagic \$(LINUX_DIR)/.vermagic|" include/kernel-defaults.mk
+        chmod a-w include/kernel-defaults.mk
         ls -a
         echo "........"
 
