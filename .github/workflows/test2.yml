@@ -96,6 +96,7 @@ jobs:
         export PATCH="grep '=[ym]' $(LINUX_DIR)/.config.set | LC_ALL=C sort | $(MKHASH) md5 > $(LINUX_DIR)/.vermagic"
         export VERMAGIC_PATCH="cp $(TOPDIR)/.vermagic $(LINUX_DIR)/.vermagic"
         echo $PATCH
+        sed -i "s#${PATCH}#${VERMAGIC_PATCH}#g" include/kernel-defaults.mk
         sed -i "s#grep '=[ym]' \$(LINUX_DIR)/.config.set.*#${VERMAGIC_PATCH}#g" include/kernel-defaults.mk
       
     - name: 查看1
