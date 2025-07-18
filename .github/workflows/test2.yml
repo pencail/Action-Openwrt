@@ -58,6 +58,18 @@ jobs:
         echo "DIY_P1_SH=${DIY_P1_SH}" >> ${GITHUB_ENV}
         echo "DIY_P2_SH=${DIY_P2_SH}" >> ${GITHUB_ENV}
 
+    - name: 部署编译环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+
     - name: 下载固件
       working-directory: /workdir
       run: |
@@ -73,4 +85,41 @@ jobs:
 
         cd openwrt
         ls -a
+        cat .vermagic
 
+    - name: 加载自定义源(feeds)，同时运行part1脚本
+      run: |
+        if [ -f "build/${{github.event.inputs.target}}/$FEEDS_CONF" ]; then
+          cp build/${{github.event.inputs.target}}/$FEEDS_CONF openwrt/feeds.conf.default
+        fi
+        
+        chmod +x build/${{github.event.inputs.target}}/$DIY_P1_SH
+        cd openwrt
+        /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/$DIY_P1_SH"
+
+    - name: 更新自定义源(feeds)
+      run: cd openwrt && ./scripts/feeds update -a
+
+    - name: 安装自定义源(feeds)
+      run: cd openwrt && ./scripts/feeds install -a
+
+    - name: 加载配置文件(config)，同时运行part2脚本
+      run: |
+        cp build/${{github.event.inputs.target}}/$CONFIG_FILE openwrt/.config
+        chmod +x build/${{github.event.inputs.target}}/$DIY_P2_SH    
+        cd openwrt
+        /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/$DIY_P2_SH"
+
+    - name: 查看1
+      run: |
+        cd openwrt
+        echo "```"
+        cat include/kernel-defaults.mk
+        echo "```"
+
+    - name: 查看2
+      run: |
+        cd openwrt
+        echo "```"
+        cat package/kernel/linux/Makefile
+        echo "```"
