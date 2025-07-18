@@ -16,8 +16,8 @@
 #pushd feeds/packages/lang
 #rm -rf golang && svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang
 #popd
-#PATCH='grep '=[ym]' $(LINUX_DIR)/.config.set | LC_ALL=C sort | $(MKHASH) md5 > $(LINUX_DIR)/.vermagic'
-#VERMAGIC_PATCH='cp $(TOPDIR)/.vermagic $(LINUX_DIR)/.vermagic'
+PATCH='grep '=[ym]' $(LINUX_DIR)/.config.set | LC_ALL=C sort | $(MKHASH) md5 > $(LINUX_DIR)/.vermagic'
+VERMAGIC_PATCH='cp $(TOPDIR)/.vermagic $(LINUX_DIR)/.vermagic'
 
 
 #sed -i 's/192.168.1.1/192.168.1.5/g' package/base-files/files/bin/config_generate
@@ -33,7 +33,7 @@
 #sed -i '130s/.*/cp \$(TOPDIR)\/\.vermagic \$(LINUX_DIR)\/\.vermagic/g' include/kernel-defaults.mk
 #sed -i '130s#.*#\tcp $(TOPDIR)/.vermagic $(LINUX_DIR)/.vermagic#g' include/kernel-defaults.mk
 #sed -i '29s#.*#\tSTAMP_BUILT:=$(STAMP_BUILT)_$(shell cat $(LINUX_DIR)/.vermagic)#g' package/kernel/linux/Makefile
-#sed -i "s/${PATCH}/${VERMAGIC_PATCH}/g" include/kernel-defaults.mk
+sed -i "s/${PATCH}/${VERMAGIC_PATCH}/g" include/kernel-defaults.mk
 
 #删除软件仓库中luci-app-adguardhome或者adguardhome的初始化脚本
 #rm -f feeds/pencail/luci-app-adguardhome/root/etc/init.d/adguardhome
