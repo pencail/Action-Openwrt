@@ -86,23 +86,7 @@ jobs:
         cd openwrt
         ls -a
         cat .vermagic
-
-    - name: 加载自定义源(feeds)，同时运行part1脚本
-      run: |
-        if [ -f "build/${{github.event.inputs.target}}/$FEEDS_CONF" ]; then
-          cp build/${{github.event.inputs.target}}/$FEEDS_CONF openwrt/feeds.conf.default
-        fi
         
-        chmod +x build/${{github.event.inputs.target}}/$DIY_P1_SH
-        cd openwrt
-        /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/$DIY_P1_SH"
-
-    - name: 更新自定义源(feeds)
-      run: cd openwrt && ./scripts/feeds update -a
-
-    - name: 安装自定义源(feeds)
-      run: cd openwrt && ./scripts/feeds install -a
-
     - name: 加载配置文件(config)，同时运行part2脚本
       run: |
         cp build/${{github.event.inputs.target}}/$CONFIG_FILE openwrt/.config
