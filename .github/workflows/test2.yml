@@ -96,15 +96,8 @@ jobs:
         sed -i "s|grep '=[ym]' \$(LINUX_DIR)/.config.set.*|cp \$(TOPDIR)/.vermagic \$(LINUX_DIR)/.vermagic|" include/kernel-defaults.mk
         ls -a
         echo "........"
-        cd include
-        ls -a
-        echo "........"
-        cat kernel-defaults.mk
-        echo "........."
 
     - name: 查看2
       run: |
-        cd openwrt
-        echo "```"
-        cat package/kernel/linux/Makefile
-        echo "```"
+        cd openwrt/include
+        cat kernel-defaults.mk
