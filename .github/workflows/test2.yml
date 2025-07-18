@@ -38,6 +38,9 @@ jobs:
       run: |
         echo ${{github.event.inputs.target}}
         echo ${{matrix.target}}
+
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
     
     - name: 拉取仓库
       uses: actions/checkout@main
