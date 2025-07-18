@@ -135,11 +135,6 @@ jobs:
         cd openwrt
         /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/$DIY_P2_SH"
 #        [ -e $CONFIG_FILE ] && 
-
-    - name: 测试
-      run: |
-        cd openwrt/include
-        cat kernel-defaults.mk
         
     - name: 加载file文件
       run: |
