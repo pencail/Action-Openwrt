@@ -94,12 +94,6 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: 加载内核MD5文件
-      run: |
-        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/md5.vermagic" 2>/dev/null)" ]; then
-          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/md5.vermagic openwrt/.vermagic
-        fi
-
     - name: 加载自定义源(feeds)，同时运行part1脚本
       run: |
         if [ -f "build/${{github.event.inputs.target}}/$FEEDS_CONF" ]; then
@@ -140,10 +134,17 @@ jobs:
           cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/DIY/* openwrt
         fi
 
+    - name: 加载内核MD5文件
+      run: |
+        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/md5.vermagic" 2>/dev/null)" ]; then
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/md5.vermagic openwrt/.vermagic
+        fi
+
     - name: 加载补丁文件
       run: |
         if [ -n "$(ls -A "build/${{github.event.inputs.target}}/Patch/patch.sh" 2>/dev/null)" ]; then
           chmod +x build/${{github.event.inputs.target}}/Patch/patch.sh
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/Patch/patches openwrt/patches
           cd openwrt
           /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/Patch/patch.sh"
         fi
