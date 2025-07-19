@@ -1,4 +1,3 @@
-
 #
 # Copyright (C) 2006-2010 OpenWrt.org
 #
@@ -66,6 +65,7 @@ define Package/kernel/install
 	strings $(LINUX_DIR)/modules.builtin.modinfo | \
 		grep -E -v "\.(file$(if CONFIG_MODULE_STRIPPED,|parmtype))=" | \
 		tr '\n' '\0' > $(1)/$(MODULES_SUBDIR)/modules.builtin.modinfo
+	echo $(LINUX_VERSION)~$(LINUX_VERMAGIC)-r$(LINUX_RELEASE) > $(TMP_DIR)/kernel.version
 endef
 
 define Package/kernel/extra_provides

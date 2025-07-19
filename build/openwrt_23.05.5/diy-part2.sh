@@ -25,13 +25,6 @@
 #sed -i 's/%D %V %C/OpenWrt By Pencail/g' package/base-files/files/etc/openwrt_release
 #sed -i 's/%C/By Pencail/g' package/base-files/files/etc/banner
 
-# sed语法，\用来标记特殊符号，如果字符中有特殊符号，前边加上\标记
-#删除源码中自动生成内核md5的代码
-#sed -i '130d' include/kernel-defaults.mk
-#复制官方内核md5到编译中
-#sed -i '129a cp $(TOPDIR)/.vermagic $(LINUX_DIR)/.vermagic' include/kernel-defaults.mk
-#sed -i '130s/.*/cp \$(TOPDIR)\/\.vermagic \$(LINUX_DIR)\/\.vermagic/g' include/kernel-defaults.mk
-#sed -i "s#${PATCH}#${VERMAGIC_PATCH}#g" include/kernel-defaults.mk
 
 #删除软件仓库中luci-app-adguardhome或者adguardhome的初始化脚本
 #rm -f feeds/pencail/luci-app-adguardhome/root/etc/init.d/adguardhome
