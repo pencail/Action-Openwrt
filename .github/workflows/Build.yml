@@ -109,8 +109,8 @@ jobs:
       run: cd openwrt && ./scripts/feeds update -a
     
     - name: 删除自定义源中的argon
+      working-directory: openwrt
       run: |
-        cd openwrt
         rm -rf feeds/pencail/luci-theme-argon
         rm -rf feeds/pencail/luci-theme-argon-config
 #        rm -rf feeds/kenzo/luci-theme-argon
@@ -122,10 +122,10 @@ jobs:
       
 
     - name: 加载配置文件(config)，同时运行part2脚本
+      working-directory: openwrt
       run: |
-        cp build/${{github.event.inputs.target}}/$CONFIG_FILE openwrt/.config
-        chmod +x build/${{github.event.inputs.target}}/$DIY_P2_SH    
-        cd openwrt
+        cp build/${{github.event.inputs.target}}/$CONFIG_FILE .config
+        chmod +x build/${{github.event.inputs.target}}/$DIY_P2_SH
         /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/$DIY_P2_SH"
         
     - name: 加载file文件
@@ -145,22 +145,22 @@ jobs:
         test -f openwrt/.vermagic && echo "✅ vermagic 文件已加载" || echo "❌ vermagic 缺失"
         
     - name: 下载软件包
+      working-directory: openwrt
       id: package
       run: |
-        cd openwrt
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
     - name: 加载补丁文件
+      working-directory: openwrt
       run: |
         if [ -n "$(ls -A "build/${{github.event.inputs.target}}/patches" 2>/dev/null)" ]; then
-          cd openwrt
-          chmod +x build/${{github.event.inputs.target}}/scripts/apply_all_patches.sh
-          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches openwrt/patches
+          chmod +x $GITHUB_WORKSPACE/scripts/apply_all_patches.sh
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches patches
           echo "🧩 正在应用补丁文件..."  
-          /bin/bash build/${{github.event.inputs.target}}/scripts/apply_all_patches.sh
+          /bin/bash $GITHUB_WORKSPACE/scripts/apply_all_patches.sh
         fi
         
     - name: 上传补丁日志
