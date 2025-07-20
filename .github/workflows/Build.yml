@@ -150,6 +150,7 @@ jobs:
         fi
     - name: log
       run: |
+        cd openwrt
         quilt applied
         echo "///////////"
         make target/linux/prepare V=s
