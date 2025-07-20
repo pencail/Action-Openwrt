@@ -145,6 +145,13 @@ jobs:
         if [ -n "$(ls -A "build/${{github.event.inputs.target}}/patches" 2>/dev/null)" ]; then
           cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches openwrt/patches
         fi
+    - name: log
+      run: |
+        cd openwrt
+        ls -a
+        echo "\\\\\\\\\\\\\\"
+        cd patches
+        ls -a
 
     - name: 下载软件包
       id: package
