@@ -140,21 +140,10 @@ jobs:
           cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/md5.vermagic openwrt/.vermagic
         fi
 
-    - name: 加载补丁文件
+    - name: 验证 .vermagic 是否加载成功
       run: |
-        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/patches" 2>/dev/null)" ]; then
-          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches openwrt/patches
-          cd openwrt
-          quilt init
-          quilt push -a
-        fi
-    - name: log
-      run: |
-        cd openwrt
-        quilt applied
-        echo "///////////"
-        make target/linux/prepare V=s
-
+        test -f openwrt/.vermagic && echo "✅ vermagic 文件已加载" || echo "❌ vermagic 缺失"
+        
     - name: 下载软件包
       id: package
       run: |
@@ -163,6 +152,23 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+
+    - name: 加载补丁文件
+      run: |
+        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/patches" 2>/dev/null)" ]; then
+          cd openwrt
+          chmod +x build/${{github.event.inputs.target}}/scripts/apply_all_patches.sh
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches openwrt/patches
+          echo "🧩 正在应用补丁文件..."  
+          /bin/bash build/${{github.event.inputs.target}}/scripts/apply_all_patches.sh
+        fi
+        
+    - name: 上传补丁日志
+      uses: actions/upload-artifact@main
+      if: success()
+      with:
+        name: patchlog
+        path: openwrt/patchlog.txt
 
     - name: 开始编译
       id: compile
@@ -201,26 +207,6 @@ jobs:
       with:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
-
-#    - name: 生成tag
-#      id: tag
-#      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-#      run: |
-#        echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
-#        touch release.txt
-#        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
-#        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
-#        echo "status=success" >> $GITHUB_OUTPUT
-
-#    - name: 自动发布固件
-#      uses: softprops/action-gh-release@v1
-#      if: steps.tag.outputs.status == 'success' && !cancelled()
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      with:
-#        tag_name: ${{ steps.tag.outputs.release_tag }}
-#        body_path: release.txt
-#        files: ${{ env.FIRMWARE }}/*
 
     - name: 上传固件到「奶牛快传」和「wetransfer」
       id: transfer
