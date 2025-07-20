@@ -142,11 +142,8 @@ jobs:
 
     - name: 加载补丁文件
       run: |
-        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/Patch/patch.sh" 2>/dev/null)" ]; then
-          chmod +x build/${{github.event.inputs.target}}/Patch/patch.sh
-          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/Patch/patches openwrt/patches
-          cd openwrt
-          /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/Patch/patch.sh"
+        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/patches" 2>/dev/null)" ]; then
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches openwrt/patches
         fi
 
     - name: 下载软件包
