@@ -124,7 +124,7 @@ jobs:
     - name: 加载配置文件(config)，同时运行part2脚本
       working-directory: openwrt
       run: |
-        cp build/${{github.event.inputs.target}}/$CONFIG_FILE .config
+        cp $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/$CONFIG_FILE .config
         chmod +x build/${{github.event.inputs.target}}/$DIY_P2_SH
         /bin/bash "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/$DIY_P2_SH"
         
