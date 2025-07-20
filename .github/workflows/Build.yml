@@ -154,13 +154,12 @@ jobs:
         find dl -size -1024c -exec rm -f {} \;
 
     - name: 加载补丁文件
-      working-directory: openwrt
       run: |
         if [ -n "$(ls -A "build/${{github.event.inputs.target}}/patches" 2>/dev/null)" ]; then
-          chmod +x $GITHUB_WORKSPACE/scripts/apply_all_patches.sh
-          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches patches
+          chmod +x scripts/apply_all_patches.sh
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches openwrt/patches
           echo "🧩 正在应用补丁文件..."  
-          /bin/bash $GITHUB_WORKSPACE/scripts/apply_all_patches.sh
+          /bin/bash scripts/apply_all_patches.sh openwrt/patches build/${{github.event.inputs.target}}/patchmap.yml openwrt/logs/patchlog.txt
         fi
         
     - name: 上传补丁日志
@@ -168,7 +167,7 @@ jobs:
       if: success()
       with:
         name: patchlog
-        path: openwrt/patchlog.txt
+        path: openwrt/logs/patchlog.txt
 
     - name: 开始编译
       id: compile
