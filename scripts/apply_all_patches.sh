@@ -85,16 +85,14 @@ apply_patch() {
 
 # 🚀 遍历补丁条目并处理
 for entry in "${PATCH_ENTRIES[@]}"; do
-    patch_path=$(echo "$entry" | yq -o=json '.path' | sed 's/"//g')
-    force_flag=$(echo "$entry" | yq -o=json '.force' | sed 's/"//g')
-    force_flag="${force_flag:-false}"  # 默认 false
-
+    patch_path=$(echo "$entry" | jq -r '.path')
+    force_flag=$(echo "$entry" | jq -r '.force // "false"')
     full_path="${PATCH_DIR}/${patch_path#patches/}"
+
     if [ -f "$full_path" ]; then
         apply_patch "$full_path" "$force_flag"
     else
         echo "🚫 未找到补丁文件: $full_path" | tee -a "$LOG_FILE"
         echo "[MISSING] $(date '+%F %T') $full_path" >> "$LOG_FILE"
     fi
-done
 done
