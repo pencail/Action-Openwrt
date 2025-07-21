@@ -163,7 +163,7 @@ jobs:
           /bin/bash $GITHUB_WORKSPACE/scripts/apply_all_patches.sh patches $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patchmap.yml logs/patchlog.txt
 
           echo "🧩 补丁日志预览："
-          tail -n 10 openwrt/logs/patchlog.txt || echo "(⚠️ 无日志输出)"
+          tail -n 10 logs/patchlog.txt || echo "(⚠️ 无日志输出)"
         fi
         
     - name: 上传补丁日志
