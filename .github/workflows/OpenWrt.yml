@@ -79,12 +79,6 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: 加载内核MD5文件
-      run: |
-        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/md5.vermagic" 2>/dev/null)" ]; then
-          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/md5.vermagic openwrt/.vermagic
-        fi
-
     - name: 加载自定义源(feeds)，同时运行part1脚本
       run: |
         if [ -f "build/${{matrix.target}}/$FEEDS_CONF" ]; then
@@ -100,8 +94,8 @@ jobs:
       run: cd openwrt && ./scripts/feeds update -a
     
     - name: 删除自定义源中的argon
+      working-directory: openwrt
       run: |
-        cd openwrt
         rm -rf feeds/pencail/luci-theme-argon
         rm -rf feeds/pencail/luci-theme-argon-config
 #        rm -rf feeds/kenzo/luci-theme-argon
@@ -126,14 +120,44 @@ jobs:
           cp -Rf $GITHUB_WORKSPACE/build/${{matrix.target}}/DIY/* openwrt
         fi
 
+    - name: 加载内核MD5文件
+      run: |
+        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/md5.vermagic" 2>/dev/null)" ]; then
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/md5.vermagic openwrt/.vermagic
+        fi
+
+    - name: 验证 .vermagic 是否加载成功
+      run: |
+        test -f openwrt/.vermagic && echo "✅ vermagic 文件已加载" || echo "❌ vermagic 缺失"
+
     - name: 下载软件包
+      working-directory: openwrt
       id: package
       run: |
-        cd openwrt
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+
+    - name: 加载补丁文件
+      working-directory: openwrt
+      run: |
+        if [ -n "$(ls -A "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches" 2>/dev/null)" ]; then
+          chmod +x $GITHUB_WORKSPACE/scripts/apply_all_patches.sh
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches patches
+          echo "🧩 正在应用补丁文件..."  
+          /bin/bash $GITHUB_WORKSPACE/scripts/apply_all_patches.sh patches $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patchmap.yml logs/patchlog.txt
+
+          echo "🧩 补丁日志预览："
+          tail -n 10 logs/patchlog.txt || echo "(⚠️ 无日志输出)"
+        fi
+        
+    - name: 上传补丁日志
+      uses: actions/upload-artifact@main
+      if: success()
+      with:
+        name: patchlog
+        path: openwrt/logs/patchlog.txt
 
     - name: 开始编译
       id: compile
