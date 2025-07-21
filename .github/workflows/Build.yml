@@ -160,6 +160,9 @@ jobs:
           cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches openwrt/patches
           echo "🧩 正在应用补丁文件..."  
           /bin/bash scripts/apply_all_patches.sh openwrt/patches build/${{github.event.inputs.target}}/patchmap.yml openwrt/logs/patchlog.txt
+
+          echo "🧩 补丁日志预览："
+          tail -n 10 openwrt/logs/patchlog.txt || echo "(⚠️ 无日志输出)"
         fi
         
     - name: 上传补丁日志

@@ -60,28 +60,41 @@ if ! command -v yq &>/dev/null; then
 fi
 
 # 📖 解析 patchmap.yml，获取启用补丁列表
-ENABLED_PATCHES=($(yq '.patches[] | select(.enabled == true) | .path' "$PATCHMAP" | sed 's/"//g'))
+mapfile -t PATCH_ENTRIES < <(yq -o=json '.patches[] | select(.enabled == true)' "$PATCHMAP")
 
 # 🩹 补丁应用函数（含冲突检测）
 apply_patch() {
     local patch="$1"
+    local force="$2"
+
     if patch --dry-run -p1 < "$patch" &>/dev/null; then
         echo "✅ 应用补丁: $patch" | tee -a "$LOG_FILE"
         patch -p1 < "$patch"
         echo "[PATCHED] $(date '+%F %T') $patch" >> "$LOG_FILE"
     else
-        echo "⚠️ 跳过（已应用或冲突）: $patch" | tee -a "$LOG_FILE"
-        echo "[SKIPPED] $(date '+%F %T') $patch" >> "$LOG_FILE"
+        if [[ "$force" == "true" ]]; then
+            echo "⚠️ 强制应用补丁（force: true）: $patch" | tee -a "$LOG_FILE"
+            patch -p1 -f < "$patch"
+            echo "[FORCED] $(date '+%F %T') $patch" >> "$LOG_FILE"
+        else
+            echo "⚠️ 跳过（已应用或冲突）: $patch" | tee -a "$LOG_FILE"
+            echo "[SKIPPED] $(date '+%F %T') $patch" >> "$LOG_FILE"
+        fi
     fi
 }
 
-# 🚀 遍历补丁路径列表并处理
-for patch_path in "${ENABLED_PATCHES[@]}"; do
+# 🚀 遍历补丁条目并处理
+for entry in "${PATCH_ENTRIES[@]}"; do
+    patch_path=$(echo "$entry" | yq -o=json '.path' | sed 's/"//g')
+    force_flag=$(echo "$entry" | yq -o=json '.force' | sed 's/"//g')
+    force_flag="${force_flag:-false}"  # 默认 false
+
     full_path="${PATCH_DIR}/${patch_path#patches/}"
     if [ -f "$full_path" ]; then
-        apply_patch "$full_path"
+        apply_patch "$full_path" "$force_flag"
     else
         echo "🚫 未找到补丁文件: $full_path" | tee -a "$LOG_FILE"
         echo "[MISSING] $(date '+%F %T') $full_path" >> "$LOG_FILE"
     fi
+done
 done
