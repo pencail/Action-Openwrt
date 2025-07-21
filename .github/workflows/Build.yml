@@ -131,7 +131,7 @@ jobs:
     - name: 加载file文件
       run: |
         if [ -n "$(ls -A "build/${{github.event.inputs.target}}/DIY" 2>/dev/null)" ]; then
-          rsync -av --exclude='README.md' "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/DIY/" openwrt/
+          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/DIY/* openwrt
         fi
 
     - name: 加载内核MD5文件

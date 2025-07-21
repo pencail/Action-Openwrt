@@ -1,11 +1,11 @@
 patches:
-  - path: patches/kernel/100-kernel-defaults-fix.patch
+  - path: patches/100-kernel-defaults-fix.patch
     name: 修复 kernel-defaults.mk MD5 校验逻辑
     enabled: true
     tags: [kernel, md5, global]
     comment: 通用内核构建补丁，用于绕过 OpenWrt 全平台的 .vermagic 校验机制
 
-  - path: patches/kernel/100-package-kernel-linux-Makefile-fix.patch
+  - path: patches/100-package-kernel-linux-Makefile-fix.patch
     name: 修复 package/kernel/linux/Makefile 校验逻辑
     enabled: true
     tags: [kernel, md5, global]
