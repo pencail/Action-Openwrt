@@ -156,7 +156,7 @@ jobs:
     - name: 加载补丁文件
       working-directory: openwrt
       run: |
-        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/patches" 2>/dev/null)" ]; then
+        if [ -n "$(ls -A "$GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches" 2>/dev/null)" ]; then
           chmod +x $GITHUB_WORKSPACE/scripts/apply_all_patches.sh
           cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/patches patches
           echo "🧩 正在应用补丁文件..."  
