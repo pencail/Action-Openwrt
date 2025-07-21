@@ -60,7 +60,7 @@ if ! command -v yq &>/dev/null; then
 fi
 
 # 📖 解析 patchmap.yml，获取启用补丁列表
-mapfile -t PATCH_ENTRIES < <(yq -o=json '.patches[] | select(.enabled == true)' "$PATCHMAP")
+mapfile -t PATCH_ENTRIES < <(yq -o=json -c '.patches[] | select(.enabled == true)' "$PATCHMAP")
 
 # 🩹 补丁应用函数（含冲突检测）
 apply_patch() {
@@ -87,7 +87,7 @@ apply_patch() {
 for entry in "${PATCH_ENTRIES[@]}"; do
     patch_path=$(echo "$entry" | jq -r '.path')
     force_flag=$(echo "$entry" | jq -r '.force // "false"')
-    full_path="${PATCH_DIR}/${patch_path#patches/}"
+    full_path="$PATCH_DIR/${patch_path#patches/}"
 
     if [ -f "$full_path" ]; then
         apply_patch "$full_path" "$force_flag"
