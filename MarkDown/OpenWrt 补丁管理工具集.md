@@ -95,6 +95,31 @@ patches:
 - 将 patchlog.txt 上传为构建产物或发布页面附件
 - 可拓展为 Markdown/HTML 报告或 Release 打包脚本
 
+### 💡 创建补丁
+- 使用 ```diff -uNf 旧文件 新文件 > 补丁位置``` 生成
+- 使用 quilt命令
+  ```
+  quilt init 初始化（如果没有初始化） 
+  quilt new 补丁名 
+  quilt add 待修改文件 
+  修改文件 
+  quilt refresh 生成补丁
+  ```
+
+### 📂 常见补丁子目录类型说明
+
+| 目录名称 | 对应模块 | 说明用途 |
+| :----- | :----- | :----- |
+|kernel/ | 内核相关 | 涉及 Linux 内核的 Makefile、配置项、驱动、MD5验证等修改 |
+|packages/ | 软件包层 | 修改 OpenWrt 官方包或 feeds 下的第三方包，例如 luci、base、lang、net 等 |
+|platform/ | 设备平台 | 针对特定架构的补丁，如 ramips、ath79、x86、rockchip 等平台设备的相关补丁 |
+|target/ | 构建目标 | 定制 OpenWrt 架构构建规则，如 target.mk、image.mk 等 |
+|toolchain/ | 编译工具链 | 修复 host 构建工具如 gcc、binutils、musl 的兼容问题 |
+|scripts/ | 编译脚本 | 修改 scripts/feeds、scripts/download.pl 或其他辅助工具 |
+|boot/ | 启动相关 | 涉及 U-Boot、EFI、loader 等启动逻辑的修改补丁 |
+|luci/ | 前端界面 | 涉及 Luci Web UI 的样式、默认行为、主题配置的修改 |
+|misc/ | 其他杂项 | 无法归类的补丁，例如 banner、默认 DNS、系统参数调整等 |
+|根目录 | 无 | 测试的补丁或者不知道放哪的补丁可以先放在根目录 |
 ### 📬 反馈与贡献
 
 PatchKit 旨在为 OpenWrt 工程化流程提供灵活、智能的补丁管理能力。
