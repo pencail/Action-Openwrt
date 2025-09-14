@@ -167,12 +167,6 @@ jobs:
         if [ -n "$(ls -A "build/${{github.event.inputs.target}}/md5.vermagic" 2>/dev/null)" ]; then
           cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/md5.vermagic openwrt/.vermagic
         fi
-    
-    - name: 加载内核MD5文件
-      run: |
-        if [ -n "$(ls -A "build/${{github.event.inputs.target}}/md5.vermagic" 2>/dev/null)" ]; then
-          cp -Rf $GITHUB_WORKSPACE/build/${{github.event.inputs.target}}/md5.vermagic openwrt/.vermagic
-        fi
 
     - name: 下载软件包
       working-directory: openwrt
