@@ -1,13 +1,5 @@
 --- a/package/kernel/linux/Makefile
 +++ b/package/kernel/linux/Makefile
-@@ -10,6 +10,7 @@
- 
- PKG_NAME:=kernel
- PKG_FLAGS:=hold
-+override PKG_RELEASE:=1
- 
- PKG_BUILD_DIR:=$(KERNEL_BUILD_DIR)/packages
- SUBTARGETS = $(sort $(filter-out feeds,$(notdir $(wildcard $(TOPDIR)/target/linux/* $(TOPDIR)/target/linux/feeds/*))))
 @@ -26,7 +26,7 @@
  include $(INCLUDE_DIR)/package.mk
  
