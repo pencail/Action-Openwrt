@@ -4,7 +4,7 @@
  
  PKG_NAME:=kernel
  PKG_FLAGS:=hold
-+PKG_RELEASE:=1
++override PKG_RELEASE:=1
  
  PKG_BUILD_DIR:=$(KERNEL_BUILD_DIR)/packages
  SUBTARGETS = $(sort $(filter-out feeds,$(notdir $(wildcard $(TOPDIR)/target/linux/* $(TOPDIR)/target/linux/feeds/*))))
@@ -13,7 +13,7 @@
  
  ifeq ($(DUMP),)
 -  STAMP_BUILT:=$(STAMP_BUILT)_$(shell $(SCRIPT_DIR)/kconfig.pl $(LINUX_DIR)/.config | $(MKHASH) md5)
-+  STAMP_BUILT:=$(STAMP_BUILT)-$(shell cat $(LINUX_DIR)/.vermagic)
++  STAMP_BUILT:=$(STAMP_BUILT)_$(shell cat $(LINUX_DIR)/.vermagic)
    -include $(LINUX_DIR)/.config
  endif
  
