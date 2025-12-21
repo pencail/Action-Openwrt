@@ -139,7 +139,7 @@ jobs:
       working-directory: openwrt
       run: |
         rm -rf feeds/pencail/luci-theme-argon
-        rm -rf feeds/pencail/luci-theme-argon-config
+        rm -rf feeds/pencail/luci-app-argon-config
 #        rm -rf feeds/kenzo/luci-theme-argon
 #        rm -rf feeds/kenzo/luci-them-argone
 #        rm -rf feeds/kenzo/luci-app-argone-config

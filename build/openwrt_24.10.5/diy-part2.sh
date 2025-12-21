@@ -13,12 +13,16 @@
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
-pushd feeds/packages/lang
-rm -rf golang && svn co https://github.com/openwrt/packages/tree/openwrt-22.03/lang/golang
-popd
+#pushd feeds/packages/lang
+#rm -rf golang && svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang
+#popd
 
 
 #sed -i 's/192.168.1.1/192.168.1.5/g' package/base-files/files/bin/config_generate
 #sed -i 's/UTC/CST-8/g' package/base-files/files/bin/config_generate
 #sed -i 's/%D %V %C/OpenWrt By Pencail/g' package/base-files/files/etc/openwrt_release
 #sed -i 's/%C/By Pencail/g' package/base-files/files/etc/banner
+
+#删除软件仓库中luci-app-adguardhome或者adguardhome的初始化脚本
+#rm -f feeds/pencail/luci-app-adguardhome/root/etc/init.d/adguardhome
+sed -i '/INSTALL_BIN/d' feeds/packages/net/adguardhome/Makefile
