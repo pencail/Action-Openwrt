@@ -44,6 +44,13 @@ jobs:
       fail-fast: true                      # true：只要流程中有失败，自动停止所有流程
 
     steps:
+    - name: Maximize build space
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 512
+        swap-size-mb: 1024
+        remove-dotnet: 'true'
+
     - name: 拉取仓库
       uses: actions/checkout@main
 
@@ -198,7 +205,12 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j1 || make -j1 V=s
+
+        if !(make -j$(nproc) || make -j1 || make -j1 V=s); then
+          echo "编译失败，终止任务" 
+          exit 1
+        fi
+        
         echo "status=success" >> $GITHUB_OUTPUT
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
